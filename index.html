@@ -139,7 +139,7 @@
     </div>
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 pt-6 px-4 pointer-events-none">
+    <header class="fixed top-0 left-0 right-0 z-50 pt-4 md:pt-6 px-4 pointer-events-none">
         <!-- 
             Pointer events logic:
             - Header: none (allows clicks to pass through spacing)
@@ -149,20 +149,24 @@
         <div id="navbar" class="nav-transition container mx-auto rounded-full flex justify-between items-center max-w-5xl pointer-events-none">
             
             <!-- Left Pill (Logo) -->
-            <div id="nav-left" class="nav-pill nav-transition px-6 py-3 rounded-full pointer-events-auto">
-                <div class="text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+            <!-- Adjusted: Smaller padding on mobile (px-4 py-2), larger on desktop (md:px-6 md:py-3) -->
+            <div id="nav-left" class="nav-pill nav-transition px-4 py-2 md:px-6 md:py-3 rounded-full pointer-events-auto">
+                <!-- Adjusted: Smaller text on mobile (text-lg), larger on desktop (md:text-2xl) -->
+                <div class="text-lg md:text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
                     Khmcq
                 </div>
             </div>
 
             <!-- Right Pill (Nav Items) -->
-            <div id="nav-right" class="nav-pill nav-transition px-6 py-3 rounded-full flex items-center space-x-3 pointer-events-auto relative z-50">
+            <!-- Adjusted: Smaller padding and spacing on mobile -->
+            <div id="nav-right" class="nav-pill nav-transition px-4 py-2 md:px-6 md:py-3 rounded-full flex items-center space-x-2 md:space-x-3 pointer-events-auto relative z-50">
                 
-                <a href="https://khmcq.com" target="_blank" rel="noopener noreferrer" class="interactive glass-button px-4 py-2 rounded-full text-sm font-medium hover:text-purple-200 transition-colors block no-underline text-white">
+                <!-- Adjusted: Smaller button padding and font size on mobile -->
+                <a href="https://khmcq.com" target="_blank" rel="noopener noreferrer" class="interactive glass-button px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium hover:text-purple-200 transition-colors block no-underline text-white">
                     <span data-lang-key="backButton">Back to Khmcq.com</span>
                 </a>
 
-                <button id="language-switcher" class="interactive bg-white/10 hover:bg-white/20 text-white border border-white/10 px-4 py-2 rounded-full text-sm font-medium transition-colors">
+                <button id="language-switcher" class="interactive bg-white/10 hover:bg-white/20 text-white border border-white/10 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium transition-colors">
                     中文
                 </button>
             </div>
@@ -171,7 +175,7 @@
     </header>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 pt-32 pb-20 relative z-10 max-w-6xl">
+    <div class="container mx-auto px-4 pt-28 md:pt-32 pb-20 relative z-10 max-w-6xl">
 
         <!-- Hero Section -->
         <div class="text-center mb-20">
