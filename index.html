@@ -39,16 +39,56 @@
             100% { transform: translate(0px, 0px) scale(1); }
         }
 
-        /* --- Glassmorphism Classes --- */
-        .glass {
+        /* --- Glassmorphism & Nav Animations --- */
+        
+        /* Base Transition Settings for Smoothness */
+        .nav-transition {
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* Premium 'Ease-Out-Quint' feel */
+        }
+
+        /* State 1: Top of Page (Unified Bar) */
+        #navbar {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
-        
+
+        .nav-pill {
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: 1px solid transparent;
+            box-shadow: none;
+        }
+
+        /* State 2: Scrolled (Split Pills) */
+        /* We use the .scrolled class on the parent to trigger changes in children */
+        #navbar.scrolled {
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+        #navbar.scrolled .nav-pill {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transform: translateY(0);
+        }
+
+        /* Card Hover Effects */
         .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
@@ -77,11 +117,16 @@
         .text-glow { text-shadow: 0 0 20px rgba(255,255,255,0.3); }
 
         /* Utility for hiding/showing sections smoothly */
-        /* !important is crucial here to override Tailwind's display:flex on the sections */
         .hidden-section { display: none !important; }
         
         .fade-in { animation: fadeIn 0.5s ease-in-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Ensure interactive elements are clickable */
+        .interactive {
+            pointer-events: auto;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="text-white min-h-screen relative selection:bg-purple-500 selection:text-white">
@@ -94,21 +139,34 @@
     </div>
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 pt-6 px-4">
-        <div class="glass container mx-auto rounded-full px-6 py-3 flex justify-between items-center max-w-5xl">
-            <!-- Logo -->
-            <div class="text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
-                Khmcq
+    <header class="fixed top-0 left-0 right-0 z-50 pt-6 px-4 pointer-events-none">
+        <!-- 
+            Pointer events logic:
+            - Header: none (allows clicks to pass through spacing)
+            - Navbar: none (allows clicks to pass through gap when split)
+            - nav-pill: auto (captures clicks for logo/buttons)
+        -->
+        <div id="navbar" class="nav-transition container mx-auto rounded-full flex justify-between items-center max-w-5xl pointer-events-none">
+            
+            <!-- Left Pill (Logo) -->
+            <div id="nav-left" class="nav-pill nav-transition px-6 py-3 rounded-full pointer-events-auto">
+                <div class="text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+                    Khmcq
+                </div>
             </div>
-            <!-- Nav -->
-            <div class="flex items-center space-x-3">
-                <a href="https://www.khmcq.com" target="_blank" rel="noopener noreferrer" class="glass-button px-4 py-2 rounded-full text-sm font-medium hover:text-purple-200">
+
+            <!-- Right Pill (Nav Items) -->
+            <div id="nav-right" class="nav-pill nav-transition px-6 py-3 rounded-full flex items-center space-x-3 pointer-events-auto relative z-50">
+                
+                <a href="https://khmcq.com" target="_blank" rel="noopener noreferrer" class="interactive glass-button px-4 py-2 rounded-full text-sm font-medium hover:text-purple-200 transition-colors block no-underline text-white">
                     <span data-lang-key="backButton">Back to Khmcq.com</span>
                 </a>
-                <button id="language-switcher" class="bg-white/10 hover:bg-white/20 text-white border border-white/10 px-4 py-2 rounded-full text-sm font-medium transition-colors">
+
+                <button id="language-switcher" class="interactive bg-white/10 hover:bg-white/20 text-white border border-white/10 px-4 py-2 rounded-full text-sm font-medium transition-colors">
                     中文
                 </button>
             </div>
+
         </div>
     </header>
 
@@ -128,11 +186,10 @@
         </div>
 
         <!-- Cards Grid Container -->
-        <!-- Dynamic class switching will happen here via JS (e.g. switching from grid-cols-3 to flex-center) -->
         <div id="cards-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 transition-all duration-500">
             
             <!-- Android -->
-            <section id="section-android" class="glass glass-card rounded-3xl p-8 flex flex-col items-center text-center group relative overflow-hidden">
+            <section id="section-android" class="glass-card rounded-3xl p-8 flex flex-col items-center text-center group relative overflow-hidden">
                 <!-- Recommendation Badge -->
                 <div class="rec-badge hidden absolute top-4 right-4 bg-green-500/20 border border-green-500 text-green-300 text-xs font-bold px-3 py-1 rounded-full">Recommended</div>
                 
@@ -151,7 +208,7 @@
             </section>
 
             <!-- Windows -->
-            <section id="section-windows" class="glass glass-card rounded-3xl p-8 flex flex-col items-center text-center group relative overflow-hidden">
+            <section id="section-windows" class="glass-card rounded-3xl p-8 flex flex-col items-center text-center group relative overflow-hidden">
                 <!-- Recommendation Badge -->
                 <div class="rec-badge hidden absolute top-4 right-4 bg-blue-500/20 border border-blue-500 text-blue-300 text-xs font-bold px-3 py-1 rounded-full">Recommended</div>
                 
@@ -170,7 +227,7 @@
             </section>
 
             <!-- Mac -->
-            <section id="section-mac" class="glass glass-card rounded-3xl p-8 flex flex-col items-center text-center group relative overflow-hidden">
+            <section id="section-mac" class="glass-card rounded-3xl p-8 flex flex-col items-center text-center group relative overflow-hidden">
                 <!-- Recommendation Badge -->
                 <div class="rec-badge hidden absolute top-4 right-4 bg-gray-500/20 border border-gray-400 text-gray-300 text-xs font-bold px-3 py-1 rounded-full">Recommended</div>
 
@@ -200,7 +257,7 @@
         </div>
 
         <!-- Feature Advisor (Hero Style) -->
-        <section class="glass rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
+        <section class="glass-card rounded-3xl p-10 md:p-16 text-center relative overflow-hidden">
             <!-- Decorative sheen -->
             <div class="absolute top-0 right-0 -mt-20 -mr-20 w-64 h-64 bg-purple-500 rounded-full mix-blend-overlay filter blur-3xl opacity-20 animate-pulse"></div>
 
@@ -227,7 +284,7 @@
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="modal-backdrop"></div>
         
         <!-- Content -->
-        <div class="glass relative w-full max-w-2xl rounded-2xl p-8 transform transition-all scale-95 opacity-0 border border-white/20 shadow-2xl" id="modal-content">
+        <div class="glass-card relative w-full max-w-2xl rounded-2xl p-8 transform transition-all scale-95 opacity-0 shadow-2xl" id="modal-content">
             
             <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
                 <h3 class="text-2xl font-bold text-white" data-lang-key="modalTitle">AI Feature Advisor</h3>
@@ -316,6 +373,35 @@
         };
 
         let currentLanguage = 'en';
+
+        // --- Nav Scroll Animation Logic (Direction Aware) ---
+        const navbar = document.getElementById('navbar');
+        let lastScrollY = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            
+            // Ignore rubber-banding (negative scroll)
+            if (currentScrollY < 0) return;
+
+            // Logic:
+            // 1. If we are near the top (< 50px), always be "Whole" (default state).
+            // 2. If we are scrolling DOWN, become "Split" (add .scrolled).
+            // 3. If we are scrolling UP, become "Whole" (remove .scrolled).
+            
+            if (currentScrollY < 50) {
+                navbar.classList.remove('scrolled');
+            } else if (currentScrollY > lastScrollY) {
+                // Scrolling Down -> Split
+                navbar.classList.add('scrolled');
+            } else {
+                // Scrolling Up -> Whole
+                navbar.classList.remove('scrolled');
+            }
+
+            lastScrollY = currentScrollY;
+        });
+
 
         // --- Device Detection Logic ---
         const detectOS = () => {
